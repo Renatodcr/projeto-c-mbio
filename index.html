@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Câmbio</title>
+        <link rel="stylesheet" type="text/css" href="estilo.css">
+        <script src="js/jquery-3.4.1.js"></script>
+        <script src="script.js"></script>
+        <script>
+            $(function(){
+                $("#conversor").click(function(){
+                    $("#svazio1").empty();
+                    $("#svazio2").empty();
+                    var valorDigitado = parseFloat($("#valordig").val());
+                    var moeda = $("input[name=moeda]:checked").val();
+                  //  var resultado;
+                    if(validaCampos()==true){
+                        if(moeda == "dolar"){
+                            resultado = valorDigitado*4.028;
+                            $("#resultado").html(resultado.toFixed(2));
+                            $("#resultado").css("padding","0px");
+                        }
+                        else if(moeda == "euro"){
+                            resultado = valorDigitado*4.467;
+                            $("#resultado").html(resultado.toFixed(2));
+                            $("#resultado").css("padding","0px");
+                        }
+                        else{
+                            resultado = valorDigitado*30400.05;
+                            $("#resultado").html(resultado.toFixed(2));
+                            $("#resultado").css("padding","0px");
+                        }   
+                    }
+                });
+                var resultado = 0;
+                var acumulador = 0;
+                var acumulador2 = 0;
+                var acumulador3 = 0;
+                $("#comprar").click(function(){
+                    $("#svazio1").empty();
+                    $("#svazio2").empty();
+                    var valorDigitado = parseFloat($("#valordig").val());
+                    var moeda = $("input[name=moeda]:checked").val();
+                    if(validaCampos()==true){
+                        if(moeda == "dolar"){
+                            resultado = valorDigitado;
+                            $("#result").html("Parabéns você acabou de adiquirir "+resultado+" USD");
+                            acumulador +=resultado*4.028;
+                            // acumulador +=resultado;
+                            localStorage.setItem("Dolar",acumulador.toFixed(2));
+                        }
+                        else if(moeda == "euro"){
+                            resultado = valorDigitado;
+                            $("#result").html("Parabéns você acabou de adiquirir "+resultado+" EUR");
+                            acumulador2+=resultado*4.467;
+                            // acumulador2+=resultado;
+                            localStorage.setItem("Euro",acumulador2.toFixed(2)); 
+                        }
+                        else{
+                            resultado = valorDigitado;
+                            $("#result").html("Parabéns você acabou de adiquirir "+resultado+" BTC");
+                            acumulador3+=resultado*30400.05;
+                            // acumulador3+=resultado;
+                            localStorage.setItem("Bitcoin",acumulador3.toFixed(2));
+                        }
+                    }
+                });
+                $("#total").click(function(){
+                    $("#svazio1").empty();
+                    $("#svazio2").empty();          
+                    var dolar = localStorage.getItem("Dolar");
+                    var euro = localStorage.getItem("Euro");
+                    var bitcoin = localStorage.getItem("Bitcoin");
+                    var d = dolar/4.028;
+                    var e = euro/4.467;
+                    var b = bitcoin/30400.05;
+
+                    $("#totald").html(d.toFixed(2));
+                    $("#totale").html(e.toFixed(2));
+                    $("#totalb").html(b.toFixed(2));
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <form id="formulario">
+            <h2>Compra de Moedas</h2>
+            <p><strong>Tipo de moeda:</strong></p>
+            <input type="radio" id="d" name="moeda" value="dolar"> USD R$ 4.028 - Dólar<br/>
+            <input type="radio" id="e" name="moeda" value="euro"> EUR R$ 4.467 - Euro<br/>
+            <input type="radio" id="b" name="moeda" value="bitcoin"> BTC R$ 30400.05 - Bitcoin<br/>
+            <span id="svazio2"></span><br/>
+            <p><strong>Valor requisitado na moeda escolhida:</strong></p>
+            <input type="text" id="valordig" class="form"><br><span id="svazio1"></span><br/>
+            <input type="button" id="conversor" value="Converter"><br/><br/>
+            <strong>R$: </strong><div id="resultado"></div><br/><br/>
+            <hr/>
+            <input type="button" id="comprar" value="Comprar"><br/>
+            <span id="result"></span><br/>
+            <hr/>
+            <input type="button" id="total" value="Total vendido no dia"><br/>
+            <strong>Total vendido em USD: </strong> <span id="totald"></span><br/>
+            <strong>Total vendido em EUR: </strong> <span id="totale"></span><br/>
+            <strong>Total vendido em BTC: </strong> <span id="totalb"></span><br/>
+        </form>
+    </body>
+</html>
